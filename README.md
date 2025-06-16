@@ -1,4 +1,4 @@
-V🔊 Voice Assistant Coding – Overview for Beginners
+🔊 Voice Assistant Coding – Overview for Beginners
 
 A voice assistant is a software program that can understand voice commands and respond with actions or speech. Examples include Siri, Alexa, and Google Assistant. You can create a simple voice assistant using programming languages like Python.
 
