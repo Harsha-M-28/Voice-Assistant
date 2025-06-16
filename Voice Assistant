@@ -1,0 +1,74 @@
+import speech_recognition as sr
+import pyttsx3
+import datetime
+import webbrowser
+import wikipedia
+
+# Initialize text-to-speech engine
+engine = pyttsx3.init()
+
+def speak(text):
+    engine.say(text)
+    engine.runAndWait()
+
+def greet():
+    hour = datetime.datetime.now().hour
+    if 0 <= hour < 12:
+        speak("Good morning!")
+    elif 12 <= hour < 18:
+        speak("Good afternoon!")
+    else:
+        speak("Good evening!")
+    speak("I am your assistant. How can I help you?")
+
+def listen_command():
+    recognizer = sr.Recognizer()
+    with sr.Microphone() as source:
+        print("Listening...")
+        recognizer.pause_threshold = 1
+        audio = recognizer.listen(source)
+
+    try:
+        print("Recognizing...")
+        query = recognizer.recognize_google(audio)
+        print(f"You said: {query}")
+    except Exception as e:
+        print("Say that again please...")
+        return "None"
+    return query.lower()
+
+def process_command(command):
+    if 'wikipedia' in command:
+        speak("Searching Wikipedia...")
+        query = command.replace("wikipedia", "")
+        result = wikipedia.summary(query, sentences=2)
+        speak("According to Wikipedia:")
+        print(result)
+        speak(result)
+
+    elif 'open youtube' in command:
+        webbrowser.open("https://www.youtube.com")
+        speak("Opening YouTube")
+
+    elif 'open google' in command:
+        webbrowser.open("https://www.google.com")
+        speak("Opening Google")
+
+    elif 'time' in command:
+        time = datetime.datetime.now().strftime("%H:%M:%S")
+        speak(f"The time is {time}")
+
+    elif 'stop' in command or 'exit' in command:
+        speak("Goodbye!")
+        exit()
+
+    else:
+        speak("Sorry, I didn't understand that.")
+
+# Main program
+if __name__ == "__main__":
+    greet()
+    while True:
+        user_command = listen_command()
+        if user_command != "None":
+            process_command(user_command)
